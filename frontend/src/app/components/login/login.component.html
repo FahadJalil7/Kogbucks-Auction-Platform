@@ -1,0 +1,77 @@
+<div class="login-container">
+    <div class="glass-panel login-card">
+        <div class="logo-area">
+            <h1>Kognitive</h1>
+            <p>Auction Portal</p>
+        </div>
+
+        <div class="form-area">
+            <!-- Step 1: Enter Email -->
+            <div *ngIf="step === 1">
+                <h2>Welcome</h2>
+                <p class="sub-text">Enter your work email to receive a one-time login code.</p>
+
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        [(ngModel)]="email"
+                        placeholder="you@kognitive.com"
+                        (keyup.enter)="requestOtp()"
+                        [disabled]="isLoading"
+                    >
+                </div>
+
+                <p class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+                <button class="btn-primary" (click)="requestOtp()" [disabled]="isLoading">
+                    <span *ngIf="!isLoading">Send Login Code →</span>
+                    <span *ngIf="isLoading" class="loading-dots">Sending<span>.</span><span>.</span><span>.</span></span>
+                </button>
+
+                <div class="demo-hints">
+                    <p class="hint-title">Demo Accounts</p>
+                    <small>Admin: admin&#64;kognitive.com</small><br>
+                    <small>User: user&#64;kognitive.com</small><br>
+                    <small>User 2: user2&#64;kognitive.com</small><br>
+                    <small class="hint-info">ⓘ OTP will be printed in the backend terminal.</small>
+                </div>
+            </div>
+
+            <!-- Step 2: Enter OTP -->
+            <div *ngIf="step === 2">
+                <h2>Check Your Email</h2>
+                <p class="sub-text">We sent a 6-digit code to <strong>{{ email }}</strong>. Check the server terminal for the simulated OTP.</p>
+
+                <div class="otp-info-box" *ngIf="successMessage">
+                    <span>📧</span> {{ successMessage }}
+                </div>
+
+                <div class="input-group">
+                    <label for="otp">One-Time Password</label>
+                    <input
+                        type="text"
+                        id="otp"
+                        [(ngModel)]="otp"
+                        placeholder="● ● ● ● ● ●"
+                        maxlength="6"
+                        class="otp-input"
+                        (keyup.enter)="verifyOtp()"
+                        [disabled]="isLoading"
+                        autocomplete="one-time-code"
+                    >
+                </div>
+
+                <p class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+                <button class="btn-primary" (click)="verifyOtp()" [disabled]="isLoading">
+                    <span *ngIf="!isLoading">Verify & Login →</span>
+                    <span *ngIf="isLoading" class="loading-dots">Verifying<span>.</span><span>.</span><span>.</span></span>
+                </button>
+
+                <button class="btn-back" (click)="goBack()">← Use a different email</button>
+            </div>
+        </div>
+    </div>
+</div>
